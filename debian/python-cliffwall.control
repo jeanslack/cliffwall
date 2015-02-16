@@ -1,0 +1,30 @@
+Package: cliffwall
+Version: 0.12
+Architecture: all
+Maintainer: Gianluca Pernigotto <jeanlucperni@gmail.com>
+Installed-Size: 199
+Depends: python2.7, iptables
+Recommends:  
+Section: admin
+Priority: optional
+Homepage: http://itamburiditux.blogspot.com/
+Description: cliffwall (cli) is a personalizable Stateful Firewall  
+ cliffwall è un programma firewall (statefull) basato su iptables, senza 
+ interfaccia grafica, scritto in python e bash, che filtra e limita i pacchetti 
+ che attraversano la rete internet tutelando così il proprio ambiente Gnu/
+ Linux. Quando installato funziona con tutte le interfaccie di rete 
+ (eth, wireless, etc) di un singolo pc in una normale rete adsl domestica,
+ tuttavia è configurabile per ogni tipo di interfaccia attraverso il suo file
+ di configurazione situato in '/etc/cliffwall/0.11/iface.conf'.
+ .
+ Offre veloci possibilità di personalizzazione automatizzate: blocco degli IP 
+ (source, destination), impostazioni porte tcp/udp (drop, accept, reject)
+ ed eventuale eliminazione di ogni personale regola impostata senza che
+ l'utente usi direttamente i comandi di iptables. 
+ .
+ L'algoritmo del programma sta nello scrivere, trovare e leggere i dati, cioè 
+ gli elenchi delle regole che gli abbiamo sottoscritto, memorizzarli nei sui 
+ database e passarli a iptables automatizzandone il caricamento affinchè da noi 
+ non vengono rimossi o cambiati. Le regole vengono attivate al momento della 
+ loro sottoscrizione e nel corso di ogni riavvio del sistema e del programma 
+ stesso.

@@ -1,0 +1,68 @@
+# You should uncomment the line below and run it the first time just to
+# ensure all kernel module dependencies are OK.  There is no need to run
+# every time, however.
+
+# /sbin/depmod -a
+
+# Unless you have kernel module auto-loading disabled, you should not
+# need to manually load each of these modules.  Other than ip_tables,
+# ip_conntrack, and some of the optional modules, I've left these
+# commented by default.  Uncomment if you have any problems or if
+# you have disabled module autoload.  Note that some modules must
+# be loaded by another kernel module.
+
+# core netfilter module
+/sbin/modprobe ip_tables
+
+# the stateful connection tracking module
+/sbin/modprobe ip_conntrack
+
+# filter table module
+# /sbin/modprobe iptable_filter
+
+# mangle table module
+# /sbin/modprobe iptable_mangle
+
+# nat table module
+# /sbin/modprobe iptable_nat
+
+# LOG target module
+# /sbin/modprobe ipt_LOG
+
+# This is used to limit the number of packets per sec/min/hr
+# /sbin/modprobe ipt_limit
+
+# masquerade target module
+# /sbin/modprobe ipt_MASQUERADE
+
+# filter using owner as part of the match
+# /sbin/modprobe ipt_owner
+
+# REJECT target drops the packet and returns an ICMP response.
+# The response is configurable.  By default, connection refused.
+# /sbin/modprobe ipt_REJECT
+
+# This target allows packets to be marked in the mangle table
+# /sbin/modprobe ipt_mark
+
+# This target affects the TCP MSS
+# /sbin/modprobe ipt_tcpmss
+
+# This match allows multiple ports instead of a single port or range
+# /sbin/modprobe multiport
+
+# This match checks against the TCP flags
+# /sbin/modprobe ipt_state
+
+# This match catches packets with invalid flags
+# /sbin/modprobe ipt_unclean
+
+# The ftp nat module is required for non-PASV ftp support
+/sbin/modprobe ip_nat_ftp
+
+# the module for full ftp connection tracking
+/sbin/modprobe ip_conntrack_ftp
+
+# the module for full irc connection tracking
+/sbin/modprobe ip_conntrack_irc
+ 

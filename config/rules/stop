@@ -1,0 +1,53 @@
+#!/bin/bash
+#
+# 
+#########################################################
+# Name: stop
+# Porpose: turn off the firewall
+# Writer: Gianluca Pernigoto <jeanlucperni@gmail.com>
+# Copyright: (c) 2013-2015 Gianluca Pernigoto <jeanlucperni@gmail.com>
+# license: GPL3
+# Version: (v0.13) 10/02/2015
+# Rev 
+#
+# DESCRIPTION:
+# Stop the firewall and reset the iptables settings at default values
+########################################################## 
+
+
+if [ $(id -u) -ne 0 ]; then
+        echo -e "\nPermission denied\n"
+        exit 1
+fi
+
+
+if [ "$1" = "stop" ]; then # stop firewall and revert default settings
+ 
+    ipt=`which iptables`
+
+    ############################
+    # reset settings and default values :
+    ############################
+    
+    $ipt -t nat -F
+    $ipt -t nat -X
+    $ipt -t nat -Z
+
+    $ipt -t mangle -F
+    $ipt -t mangle -X
+    $ipt -t mangle -Z
+
+    $ipt -F
+    $ipt -X
+    $ipt -Z
+
+    ################################
+    # Policy setting standards
+    ################################
+    
+    $ipt -P INPUT   ACCEPT
+    $ipt -P FORWARD ACCEPT
+    $ipt -P OUTPUT  ACCEPT
+fi
+    
+exit 0

@@ -1,0 +1,67 @@
+#!/bin/bash
+#
+#
+#########################################################
+# Name: cliffwall (main script)
+# Porpose: Main script cliffwall runner
+# Writer: Gianluca Pernigoto <jeanlucperni@gmail.com>
+# Copyright: (c) 2013-2015 Gianluca Pernigoto <jeanlucperni@gmail.com>
+# license: GPL3
+# Version: (V0.12) Tuesday, 14 August 2012
+# Rev (v0.13) 06/02/2015
+#
+# LONG DESCRIPTION:
+#
+# This script is a convenient and reliable way for running the firewall 
+# daemon localized in /etc/rc.d/rc.firewall or /etc/init.d/firewall,
+# this depend what init-systems is used (System V or BSD style ?).
+# Also, it is check for a regular starting of cliffwall program .
+##########################################################
+
+conf_dir=/etc/cliffwall
+init_functions=/lib/cliffwall/cliffwall-init-functions
+
+# you must be root
+if [ $(id -u) -ne 0 ]; then
+        echo -e "\033[31;1mPermission denied !\033[0m you must be root"
+        exit 1
+fi
+
+# check existence files:
+if [ ! -e "$conf_dir/start" ]; then
+	echo -e "[ERROR]: $conf_dir/start script\nNot exist"
+	exit 1
+elif [ ! -e "$conf_dir/start_types" ]; then
+	echo -e "[ERROR]: $conf_dir/start_types script\nNot exist"
+	exit 1
+elif [ ! -e "$conf_dir/stop" ]; then
+	echo -e "[ERROR]: $conf_dir/stop script\nNot exist"
+	exit 1
+elif [ ! -e "$conf_dir/block" ]; then
+	echo -e "[ERROR]: $conf_dir/block script\nNot exist"
+	exit 1
+elif [ ! -e "$conf_dir/iface.conf" ]; then
+	echo -e "[ERROR]: $path3\nThis file not exist"
+	exit 1
+fi
+
+# permission of execution value
+bool=0 # is true
+
+for n in {"$init_functions","$conf_dir/start","$conf_dir/start_types","$conf_dir/stop","$conf_dir/block"}                      
+do
+	if [ ! -x "$n" ]; then
+		bool=1 # is false
+		echo -e "\n [WARNING]: $n\n Permission denied."
+		echo -e " Is not correctly set the execute permission:"
+	fi
+done
+
+if [ $bool = 1 ]; then
+	exit 1
+fi
+
+# run daemon
+$init_functions $1
+
+exit 0

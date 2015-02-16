@@ -1,0 +1,110 @@
+#
+# Kernel Parameter Conguration
+#
+# See http://ipsysctl-tutorial.frozentux.net/chunkyhtml/index.html
+# for a detailed tutorial on sysctl and the various settings
+# available.
+
+# Required to enable IPv4 forwarding.
+# Redhat users can try setting FORWARD_IPV4 in /etc/syscong/network to true
+# Alternatively, it can be set in /etc/sysctl.conf
+#
+
+#    echo "1" > /proc/sys/net/ipv4/ip_forward
+#
+#    net.ipv4.ip_forward="1"
+#
+
+# This enables dynamic address hacking.
+# This may help if you have a dynamic IP address \(e.g. slip, ppp, dhcp\).
+#
+
+#    echo "1" > /proc/sys/net/ipv4/ip_dynaddr
+#
+#    net.ipv4.ip_dynaddr="1"
+#
+
+# This enables SYN flood protection.
+# The SYN cookies activation allows your system to accept an unlimited
+# number of TCP connections while still trying to give reasonable
+# service during a denial of service attack.
+
+
+    echo "1" > /proc/sys/net/ipv4/tcp_syncookies
+
+    net.ipv4.tcp_syncookies="1"
+
+
+# This enables source validation by reversed path according to RFC1812.
+# In other words, did the response packet originate from the same interface
+# through which the source packet was sent?  It's recommended for single-homed
+# systems and routers on stub networks.  Since those are the congurations
+# this rewall is designed to support, I turn it on by default.
+# Turn it off if you use multiple NICs connected to the same network.
+
+
+    echo "1" > /proc/sys/net/ipv4/conf/all/rp_lter
+
+    net.ipv4.conf.all.rp_lter="1"
+
+
+# This option allows a subnet to be rewalled with a single IP address.
+# It's used to build a DMZ.  Since that's not a focus of this rewall
+# script, it's not enabled by default, but is included for reference.
+# See: http://www.sjdjweis.com/linux/proxyarp/ 
+#
+
+#    echo "1" > /proc/sys/net/ipv4/conf/all/proxy_arp
+#
+#    net.ipv4.conf.all.proxy_arp="1"
+#
+
+# The following kernel settings were suggested by Alex Weeks. Thanks!
+
+# This kernel parameter instructs the kernel to ignore all ICMP
+# echo requests sent to the broadcast address.  This prevents
+# a number of smurfs and similar DoS nasty attacks.
+
+
+    echo "1" > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts
+
+    net.ipv4.icmp_echo_ignore_broadcasts="1"
+
+
+# This option can be used to accept or refuse source routed
+# packets.  It is usually on by default, but is generally
+# considered a security risk.  This option turns it off.
+
+
+    echo "0" > /proc/sys/net/ipv4/conf/all/accept_source_route
+
+    net.ipv4.conf.all.accept_source_route="0"
+
+
+# This option can disable ICMP redirects.  ICMP redirects
+# are generally considered a security risk and shouldn't be
+# needed by most systems using this generator.
+#
+
+#    echo "0" > /proc/sys/net/ipv4/conf/all/accept_redirects
+#
+#    net.ipv4.conf.all.accept_redirects="0"
+#
+
+# However, we'll ensure the secure_redirects option is on instead.
+# This option accepts only from gateways in the default gateways list.
+
+
+    echo "1" > /proc/sys/net/ipv4/conf/all/secure_redirects
+
+    net.ipv4.conf.all.secure_redirects="1"
+
+
+# This option logs packets from impossible addresses.
+
+
+    echo "1" > /proc/sys/net/ipv4/conf/all/log_martians
+
+    net.ipv4.conf.all.log_martians="1"
+
+ 

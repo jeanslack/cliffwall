@@ -1,0 +1,55 @@
+#!/bin/bash
+#
+# 
+#########################################################
+# Name: block_network
+# Porpose: block all connections of the network
+# Writer: Gianluca Pernigoto <jeanlucperni@gmail.com>
+# Copyright: (c) 2013-2015 Gianluca Pernigoto <jeanlucperni@gmail.com>
+# license: GPL3
+# Version: (v0.13) 10/02/2015
+# Rev 
+#
+# DESCRIPTION:
+# I do not know whether it is useful, but it should block the 
+# entire network 
+########################################################## 
+
+
+if [ $(id -u) -ne 0 ]; then
+        echo -e "\nPermission denied\n"
+        exit 1
+fi
+
+
+if [ "$1" = "block" ]; then # block network 
+
+    ipt=`which iptables`
+
+    ############################
+    # reset settings and default values :
+    ############################
+    
+    $ipt -t nat -F
+    $ipt -t nat -X
+    $ipt -t nat -Z
+
+    $ipt -t mangle -F
+    $ipt -t mangle -X
+    $ipt -t mangle -Z
+
+    $ipt -F
+    $ipt -X
+    $ipt -Z
+
+    ################################
+    # Block all (input/output) internet traffic :
+    ################################
+    
+    $ipt -P INPUT   DROP
+    $ipt -P FORWARD DROP
+    $ipt -P OUTPUT  DROP
+    
+fi
+    
+exit 0

@@ -1,0 +1,6 @@
+## for setup.py:
+  - The postinst preinst prerm postrm are bash or sh  ???
+  - control file must be edit
+  - check files and dir permission with ls -l on the sources
+  - check MANIFEST.in in slackware
+  - Value if *.conf.new or .conf in .deb and on the sources
