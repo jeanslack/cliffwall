@@ -1,5 +1,9 @@
-# Cache objects
-packer_cache/
-
-# For built boxes
-*.box
+#Files mentioned in this file will be ignored by git
+*.pyc
+dist
+build
+deb_dist
+videomass.egg-info
+*.DS_Store
+*.directory
+*~
