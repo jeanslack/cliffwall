@@ -1,0 +1,36 @@
+#!/bin/sh
+#
+### BEGIN INIT INFO
+# Provides:      cliffwall
+# Required-Start:   $network
+# Required-Stop:
+# Default-Start:  S
+# Default-Stop:   1  
+# Short-Description: Activate iptables firewalling at boot time.
+### END INIT INFO
+
+# cliffwall-init: script for run cliffwall at boot
+
+USAGE="\033[1m\nUsage: /lib/cliffwall/cliffwall-init {restart|start|stop|status}\033[0m\n"
+
+init_functions=/lib/cliffwall/cliffwall-init-functions
+
+case "$1" in
+start)
+	$init_functions start
+	;;
+stop)
+	$init_functions stop
+	;;
+restart)
+	$init_functions stop
+	$init_functions start
+	;;
+status)
+	$init_functions status
+	;;
+*)
+	echo -e $USAGE
+	exit 1
+esac
+

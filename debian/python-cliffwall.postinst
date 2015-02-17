@@ -3,41 +3,19 @@
 set -e
 
 # Arrange for a daemon to be started at system boot time
-echo -e "\nAggiorno i collegamenti dei runlevel per gli script di avvio in rc \n"
-update-rc.d firewall defaults >/dev/null
+echo -e "\nUpdate runlevel link for init script \n"
+
+#update-rc.d cliffwall-init defaults >/dev/null # use for debian prior 6.?
+
+insserv cliffwall-init # use for debian version => 6.?
 
 if [ ! -d /etc/cliffwall/private ]; then
 	mkdir /etc/cliffwall/private
 	#chmod 0700 /etc/cliffwall/private
 fi
-
-#if [ -e /etc/cliffwall/start ]; then
-#	echo -e "Ripristino lo script start"	
-#	rm /etc/cliffwall/start.new		
-#else 
-#	echo -e "Configuro il nuovo script start"
-#	mv /etc/cliffwall/start.new /etc/cliffwall/start	
-#fi
-
-#if [ -e /etc/cliffwall/start_types ]; then
-#	echo -e "Ripristino il script start_types"	
-#	rm /etc/cliffwall/start_types.new		
-#else 
-#	echo -e "Configuro il nuovo script start_types"
-#	mv /etc/cliffwall/start_types.new /etc/cliffwall/start_types	
-#fi
-
-
-#if [ -e /etc/cliffwall/iface.conf ]; then
-#	echo -e "Ripristino il file di configurazione iface.conf"	
-#	rm /etc/cliffwall/iface.conf.new
-#else
-#	echo -e "Configuro il nuovo file di configurazione iface.conf"
-#	mv /etc/cliffwall/iface.conf.new /etc/cliffwall/iface.conf	
-#fi
  
-
-echo -e "\n Per attivare ora i parametri di sicurezza di rete dare:\n /sbin/sysctl -p /etc/sysctl.d/local10net.conf"
-echo -e "\n Il firewall ora non è avviato.\n Per avviarlo: 'cliffwall start'\n Per l'uso leggi man cliffwall \n"
+echo -e "\n If you want enable now security kernel parameters, type:\n \
+'/sbin/sysctl -p /etc/sysctl.d/cliffwall10net.conf' \n For run cliffwall, type: \
+'cliffwall start'\n For use read man cliffwall \n"
 	
 exit 0

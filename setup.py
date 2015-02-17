@@ -62,8 +62,8 @@ def  LINUX_SLACKWARE(id_distro, id_version):
 	
 	
 	DATA_FILES = [
-		('/lib/cliffwall', ['config/demon/cliffwall-init'],),
-		('/lib/cliffwall', ['config/demon/cliffwall-init-functions'],),
+		('/lib/cliffwall', ['config/daemons/cliffwall-init'],),
+		('/lib/cliffwall', ['config/daemons/cliffwall-init-functions'],),
 				]
 		# this is DATA_FILE structure: 
 		# ('dir/file destination of the data', ['dir/file on current place sources']
@@ -116,7 +116,8 @@ def LINUX_DEBIAN(id_distro, id_version):
 		('share/doc/python-cliffwall', glob_files('docs/*'),),
 		('share/doc/python-cliffwall', ['AUTHORS', 'BUGS', 'CHANGELOG', 
 		'COPYING', 'README.md', 'TODO']),
-		('/etc/init.d', ['config/demon/firewall'],),
+		('/etc/init.d', ['config/daemons/cliffwall-init'],),
+		('/lib/cliffwall', ['config/daemons/cliffwall-init-functions'],),
 		('/etc/cliffwall', glob_files('config/rules/*'),),
 		('/etc/sysctl.d', ['config/cliffwall10net.conf'],),
 				]

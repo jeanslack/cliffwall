@@ -1,0 +1,6 @@
+#! /bin/bash
+
+echo -e "\n If you want enable now security kernel parameters, type:\n \
+'/sbin/sysctl -p /etc/sysctl.d/cliffwall10net.conf' \n For run cliffwall, type: \
+'cliffwall start'\n For use read man cliffwall \n"
+
