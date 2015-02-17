@@ -1,5 +1,4 @@
 #!/bin/sh
-#
 ### BEGIN INIT INFO
 # Provides:      cliffwall
 # Required-Start:   $network
@@ -23,8 +22,7 @@ stop)
 	$init_functions stop
 	;;
 restart)
-	$init_functions stop
-	$init_functions start
+	$init_functions restart
 	;;
 status)
 	$init_functions status

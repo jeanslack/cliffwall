@@ -23,6 +23,7 @@ is used: System V or BSD style .
 
 import sys
 import os
+import time
 
 
 if os.getuid() != 0:
@@ -69,8 +70,6 @@ def start():
 	Also, it is used like cliffwall command argument from user
 	administrator
 	"""
-	print "\033[32;1mStart cliffwall Firewall:\033[0m"
-	
 	output_parser = parser(pathrule)
 	
 	starting = output_parser[0]
@@ -83,12 +82,13 @@ def start():
 		
 	except subprocess.CalledProcessError:
 		
-		sys.exit("\033[31;1m[FAILED]\033[0m subprocess.CalledProcessError: "
+		sys.exit("[\033[31;1mFAILED\033[0m] subprocess.CalledProcessError: "
 										"cliffwall fail on 'start'")
 	
 	load_custom(pathDB) # It run the need where are applied to all settings
 	
-	print "\033[32;1m...[OK]\033[0m"
+	print "[\033[32;1mOK\033[0m] cliffwall: started firewall"
+	
 	
 def stop():
 	"""
@@ -101,18 +101,16 @@ def stop():
 	  /etc/rc.d/rc.firewall stop
 	fi
 	"""
-	print "\033[31;1mStop cliffwall Firewall:\033[0m"
-	
 	try:
 		
 		subprocess.check_call('%s/stop stop' % (pathrule), shell=True)
 		
 	except subprocess.CalledProcessError:
 		
-		sys.exit("\033[31;1m[FAILED]\033[0m subprocess.CalledProcessError: "
+		sys.exit("[\033[31;1mFAILED\033[0m] subprocess.CalledProcessError: "
 											"cliffwall fail on 'stop'")
 	
-	print "\033[31;1m...[OK]\033[0m"
+	print "[\033[32;1mOK\033[0m] cliffwall: stopped firewall"
 	
 ########################################################## end functions
 	
@@ -125,6 +123,8 @@ if len(sys.argv) == 2:
 	if sys.argv[1] == "restart" or sys.argv[1] == "reload":
 		
 		stop()
+		
+		time.sleep(3)
 		
 		start()
 		
@@ -147,18 +147,16 @@ if len(sys.argv) == 2:
 		WARNING: This prevents all internet connections
 		See start script for explanation
 		"""
-		print "\033[31;1mBlock network connections:\033[0m"
-		
 		try:
 		
 			subprocess.check_call('%s/block_network block' % (pathrule), shell=True)
 		
 		except subprocess.CalledProcessError:
 			
-			sys.exit("\033[31;1m[FAILED]\033[0m subprocess.CalledProcessError: "
+			sys.exit("[\033[31;1mFAILED\033[0m] subprocess.CalledProcessError: "
 											"cliffwall fail on 'block'")
 		
-		print "\033[31;1m...[OK]\033[0m"
+		print "[ \033[32;1mOK\033[0m ] cliffwall: Block all network connections"
 		
 		sys.exit()
 		

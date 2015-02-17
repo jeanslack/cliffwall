@@ -63,12 +63,13 @@ cliffwall_test(){
 	fi
 }
 
-if [ "$1" == 'test' ]; then
+if [ "$1" = 'test' ] || [ "$1" = '-t' ]; then
 	cliffwall_test
+	echo -e "\n..tests concluded\n"
 	exit 0
 fi
 # this run cliffwall-init-functions only because cliffwall-init 
-# daemon has calling by start the system only:
+# daemon has calling by system start only:
 $init_functions $1 
 
 exit 0
