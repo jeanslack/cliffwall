@@ -3,7 +3,7 @@
 dist
 build
 deb_dist
-videomass.egg-info
+*.egg-info
 *.DS_Store
 *.directory
 *~
