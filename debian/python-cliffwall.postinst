@@ -3,7 +3,8 @@
 set -e
 
 # Arrange for a daemon to be started at system boot time
-echo -e "\nUpdate runlevel link for init script \n"
+echo ''
+echo "Update runlevel link for init script"
 
 #update-rc.d cliffwall-init defaults >/dev/null # use for debian prior 6.?
 
@@ -14,8 +15,10 @@ if [ ! -d /etc/cliffwall/private ]; then
 	#chmod 0700 /etc/cliffwall/private
 fi
  
-echo -e "\n If you want enable now security kernel parameters, type:\n \
-'/sbin/sysctl -p /etc/sysctl.d/cliffwall10net.conf' \n For run cliffwall, type: \
-'cliffwall start'\n For use read man cliffwall \n"
+echo ''
+echo "If you want enable now security kernel parameters, type:"
+echo "/sbin/sysctl -p /etc/sysctl.d/cliffwall10net.conf" 
+echo "For run cliffwall, type:"
+echo "'cliffwall start'\n For use read man cliffwall "
 	
 exit 0

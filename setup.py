@@ -70,7 +70,7 @@ def  LINUX_SLACKWARE(id_distro, id_version):
 		# even path must be relative-path
 		# use absolute path where you want copying in different location instead
 		# usr:
-	
+		
 	setup(name = NAME,
 		version = VERSION,
 		description = DESCRIPTION,

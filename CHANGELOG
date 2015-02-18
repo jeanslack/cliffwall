@@ -1,56 +1,5 @@
-+--------------------------------+
-february 14 2015  Version 0.13
-+--------------------------------+
-- Change code for many python and bash script and improved code organization
-
-- Improved the status exit control
-
-- added compatibility for init systems: rc.d and  init.d
-
-+--------------------------------+
-Friday, August 14 2012  Version 0.12
-+--------------------------------+
-
-- Add "-m multiport" module-iptables at the command in setting mode for TCP/UDP protocol
-
-- Added ability to configure multiple network interfaces of different types 
-
-- Changed the organization of the configuration file in /etc/cliffwall/0.12
-
-- Added a new file for parsing of net interfaces and startup command
-
-+--------------------------------+
-Friday, August 03 2012  Version 0.11
-+--------------------------------+
-
-- Resolved bugs in MODULE_cliffwall.py when remove rules
- 
-- Improved interactive management of the rules add with command for settings option.
-
-- Adding some cosmetic by read output.
-
-- Adding separate management between /etc/rc.d/rc.firewall and rules iptables list moved in 
-  /etc/cliffwall/0.11/cliffwall.conf for better access at the rules in bash style.
-
-- Adding iface.conf: convenient configuration file for setting all interfaces on rules list
-
-- /bin/cliffwall: adding controller for verifying integrity files and related permission
-
-- /bin/cliffwall: add parsing for iface.config file
-
-- When run installation find copy of file.conf  (sysctl.conf, cliffwall.conf, iface.conf) make it backup for some restore case.
-
 +--------------------------+
-Friday, July 20  2012
-+--------------------------+
-
-- removed kernel control parameters list (/proc/sys/...)  from rc.cliffwall 
-
-- Replacing kernel control parameters list (/proc/sys/...) from rc.cliffwall 
-  with sysctl.conf file for network security.
-
-+--------------------------+
-Saturday, May 21  2012
+Febbruary 18  2015
 +--------------------------+
 
 Initial release

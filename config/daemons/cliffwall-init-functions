@@ -3,8 +3,8 @@
 #
 #
 #########################################################
-# Name: firewall (script)
-# Porpose: firewall service daemon for linux system
+# Name: cliffwall-init-functions (script)
+# Porpose: arguments functional management
 # Writer: Gianluca Pernigoto <jeanlucperni@gmail.com>
 # Copyright: (c) 2013-2015 Gianluca Pernigoto <jeanlucperni@gmail.com>
 # license: GPL3
@@ -13,12 +13,9 @@
 #########################################################
 
 """
-This daemon is running automatically during the system startup and if called 
-with some command arg, but However, for be running, it must have execution 
-permissions .
-
-It must be locate in /etc/init.d or /etc/rc.d, this depend what init-systems
-is used: System V or BSD style .
+Main python script for guided management of the program.
+If python scripts were compatible with some systems init
+would use this init script directly as daemon.
 """
 
 import sys
@@ -40,10 +37,10 @@ COMMAND
             cliffwall [parameters]
 
 PARAMETERS
-            cliffwall accept one parameter only for session:
+            cliffwall accept one parameter for session only:
             
             reload  (disable and enable firewalling)
-            restart  (same how reload)
+            restart  (alias of reload)
             start  (enable firewalling)
             stop   (disable firewalling)
             status   (show iptables status)
@@ -82,12 +79,12 @@ def start():
 		
 	except subprocess.CalledProcessError:
 		
-		sys.exit("[\033[31;1mFAILED\033[0m] subprocess.CalledProcessError: "
+		sys.exit("[ \033[31;1mFAILED\033[0m ] subprocess.CalledProcessError: "
 										"cliffwall fail on 'start'")
 	
 	load_custom(pathDB) # It run the need where are applied to all settings
 	
-	print "[\033[32;1mOK\033[0m] cliffwall: started firewall"
+	print "[ \033[32;1mOK\033[0m ] cliffwall: started firewall"
 	
 	
 def stop():
@@ -107,10 +104,10 @@ def stop():
 		
 	except subprocess.CalledProcessError:
 		
-		sys.exit("[\033[31;1mFAILED\033[0m] subprocess.CalledProcessError: "
+		sys.exit("[ \033[31;1mFAILED\033[0m ] subprocess.CalledProcessError: "
 											"cliffwall fail on 'stop'")
 	
-	print "[\033[32;1mOK\033[0m] cliffwall: stopped firewall"
+	print "[ \033[32;1mOK\033[0m ] cliffwall: stopped firewall"
 	
 ########################################################## end functions
 	
@@ -124,7 +121,7 @@ if len(sys.argv) == 2:
 		
 		stop()
 		
-		time.sleep(3)
+		time.sleep(2)
 		
 		start()
 		
@@ -153,7 +150,7 @@ if len(sys.argv) == 2:
 		
 		except subprocess.CalledProcessError:
 			
-			sys.exit("[\033[31;1mFAILED\033[0m] subprocess.CalledProcessError: "
+			sys.exit("[ \033[31;1mFAILED\033[0m ] subprocess.CalledProcessError: "
 											"cliffwall fail on 'block'")
 		
 		print "[ \033[32;1mOK\033[0m ] cliffwall: Block all network connections"
@@ -171,7 +168,7 @@ if len(sys.argv) == 2:
 			subprocess.check_call('iptables -nvL', shell=True)
 			
 		except subprocess.CalledProcessError:
-			sys.exit("\033[31;1m[FAILED]\033[0m subprocess.CalledProcessError: "
+			sys.exit("\033[31;1m[ FAILED ]\033[0m subprocess.CalledProcessError: "
 							"cliffwall fail on 'status'")
 		print ""
 		print "\033[34;1m============================================\033[0m"
@@ -193,7 +190,7 @@ if len(sys.argv) == 2:
 				#print 'test 2: %s' % opt.outPut2
 			
 		except subprocess.CalledProcessError:
-			sys.exit("\033[31;1m[FAILED]\033[0m subprocess.CalledProcessError: "
+			sys.exit("\033[31;1m[ FAILED ]\033[0m subprocess.CalledProcessError: "
 							"cliffwall fail on 'settings'")
 		
 		sys.exit()
@@ -220,7 +217,7 @@ if len(sys.argv) == 2:
 
 if len(sys.argv) > 2: 
 	
-	print "\033[1mcliffwall accept one argument for session;\033[0m"
+	print "\033[1mcliffwall accept one only argument for session;\033[0m"
 	
 	sys.exit(USAGE)
 	

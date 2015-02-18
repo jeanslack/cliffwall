@@ -9,6 +9,11 @@
 ### END INIT INFO
 
 # cliffwall-init: script for run cliffwall at boot
+#
+# This daemon is running automatically during the system startup/stop only.
+# It should never be used directly, unless you need to do maintenance.
+# In all other cases, instead always uses this commands:
+#'cliffwall reload|restart|start|stop|block|status|settings|version|help'
 
 USAGE="\033[1m\nUsage: /lib/cliffwall/cliffwall-init {restart|start|stop|status}\033[0m\n"
 
