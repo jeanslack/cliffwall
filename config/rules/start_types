@@ -37,156 +37,156 @@ ipt=`which iptables`
 mpb=`which modprobe`
 
 
-	#################################
-	# Caricamento Moduli del Kernel #
-	#################################
-	$mpb ip_tables
-	$mpb iptable_filter
-	$mpb iptable_nat
-	$mpb ip_conntrack
-	$mpb ip_conntrack_ftp
-	$mpb ip_nat_ftp
-	$mpb ipt_LOG
-	$mpb ipt_MARK
-	$mpb ipt_MASQUERADE
-	$mpb ipt_REDIRECT
-	$mpb ipt_REJECT
-	$mpb ipt_TOS
-	$mpb ipt_limit
-	$mpb ipt_mac
-	$mpb ipt_mark
-	$mpb ipt_multiport
-	$mpb ipt_state
-	$mpb ipt_tos
-	$mpb iptable_mangle
-	
-	############################
-	# Reset delle impostazioni #
-	############################		
-	$ipt -t nat -F
-	$ipt -t nat -X
-	$ipt -t nat -Z
+    #################################
+    # Caricamento Moduli del Kernel #
+    #################################
+    $mpb ip_tables
+    $mpb iptable_filter
+    $mpb iptable_nat
+    $mpb ip_conntrack
+    $mpb ip_conntrack_ftp
+    $mpb ip_nat_ftp
+    $mpb ipt_LOG
+    $mpb ipt_MARK
+    $mpb ipt_MASQUERADE
+    $mpb ipt_REDIRECT
+    $mpb ipt_REJECT
+    $mpb ipt_TOS
+    $mpb ipt_limit
+    $mpb ipt_mac
+    $mpb ipt_mark
+    $mpb ipt_multiport
+    $mpb ipt_state
+    $mpb ipt_tos
+    $mpb iptable_mangle
+    
+    ############################
+    # Reset delle impostazioni #
+    ############################		
+    $ipt -t nat -F
+    $ipt -t nat -X
+    $ipt -t nat -Z
 
-	$ipt -t mangle -F
-	$ipt -t mangle -X
-	$ipt -t mangle -Z
+    $ipt -t mangle -F
+    $ipt -t mangle -X
+    $ipt -t mangle -Z
 
-	$ipt -F
-	$ipt -X
-	$ipt -Z
+    $ipt -F
+    $ipt -X
+    $ipt -Z
 
-	##############################
-	# Creating necessary chains 
-	##############################
-	# this custom chains are used for settings open/close tcp/udp doors
-	$ipt -N TCP
-	$ipt -N UDP
+    ##############################
+    # Creating necessary chains 
+    ##############################
+    # this custom chains are used for settings open/close tcp/udp doors
+    $ipt -N TCP
+    $ipt -N UDP
 
-	################################
-	# Impostazione Policy standard #
-	################################
-	$ipt -P INPUT   DROP
-	$ipt -P FORWARD DROP
-	$ipt -P OUTPUT  ACCEPT
+    ################################
+    # Impostazione Policy standard #
+    ################################
+    $ipt -P INPUT   DROP
+    $ipt -P FORWARD DROP
+    $ipt -P OUTPUT  ACCEPT
 
 # You can starting here for editing the following list:
 
 for IFACE in ${array[*]};
 do
-	#############################################################################
-	# Abilitazione traffico in entrata solo se relativo a pacchetti in risposta #
-	#############################################################################
-	$ipt -A INPUT -i $IFACE -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+    #############################################################################
+    # Abilitazione traffico in entrata solo se relativo a pacchetti in risposta #
+    #############################################################################
+    $ipt -A INPUT -i $IFACE -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 
 done
 
-	#################################
-	# Abilitazione traffico interno #
-	#################################
-	$ipt -A INPUT -i lo -j ACCEPT
+    #################################
+    # Abilitazione traffico interno #
+    #################################
+    $ipt -A INPUT -i lo -j ACCEPT
 
 
 for IFACE in ${array[*]};
 do
-	#################################
-	# The third rule will drop all traffic with an "INVALID" state match. Traffic can
-	# fall into four "state" categories: NEW, ESTABLISHED, RELATED or INVALID
-	#################################
-	$ipt -A INPUT -i $IFACE -m conntrack --ctstate INVALID -j DROP
+    #################################
+    # The third rule will drop all traffic with an "INVALID" state match. Traffic can
+    # fall into four "state" categories: NEW, ESTABLISHED, RELATED or INVALID
+    #################################
+    $ipt -A INPUT -i $IFACE -m conntrack --ctstate INVALID -j DROP
     
 
-	#############################################################################
-	# The next rule will accept all new incoming ICMP echo requests, also known as pings.
-	#############################################################################
-	$ipt -A INPUT -i $IFACE -p icmp --icmp-type 8 -m conntrack --ctstate NEW -j ACCEPT
+    #############################################################################
+    # The next rule will accept all new incoming ICMP echo requests, also known as pings.
+    #############################################################################
+    $ipt -A INPUT -i $IFACE -p icmp --icmp-type 8 -m conntrack --ctstate NEW -j ACCEPT
 
-	#############################################################################
-	# Now we append the OPEN chains to INPUT chain to handle all new incoming connections
-	#############################################################################
-	$ipt -A INPUT -i $IFACE -p udp -m conntrack --ctstate NEW -j UDP
-	$ipt -A INPUT -i $IFACE -p tcp --syn -m conntrack --ctstate NEW -j TCP
+    #############################################################################
+    # Now we append the OPEN chains to INPUT chain to handle all new incoming connections
+    #############################################################################
+    $ipt -A INPUT -i $IFACE -p udp -m conntrack --ctstate NEW -j UDP
+    $ipt -A INPUT -i $IFACE -p tcp --syn -m conntrack --ctstate NEW -j TCP
 
-	#############################################################################
-	# We reject TCP connections with TCP RST packets and UDP streams with ICMP port 
-	# unreachable messages if the ports are not opened
-	#############################################################################
-	$ipt -A INPUT -i $IFACE -p udp -j REJECT --reject-with icmp-port-unreachable
-	$ipt -A INPUT -i $IFACE -p tcp -j REJECT --reject-with tcp-rst
+    #############################################################################
+    # We reject TCP connections with TCP RST packets and UDP streams with ICMP port 
+    # unreachable messages if the ports are not opened
+    #############################################################################
+    $ipt -A INPUT -i $IFACE -p udp -j REJECT --reject-with icmp-port-unreachable
+    $ipt -A INPUT -i $IFACE -p tcp -j REJECT --reject-with tcp-rst
 
-	#############################################################################
-	# For other protocols, we add a final rule to the INPUT chain to reject all remaining
-	# incoming traffic with icmp protocol unreachable messages. This imitates Linux's default behavior. 
-	#############################################################################
-	$ipt -A INPUT -i $IFACE -j REJECT --reject-with icmp-proto-unreachable
+    #############################################################################
+    # For other protocols, we add a final rule to the INPUT chain to reject all remaining
+    # incoming traffic with icmp protocol unreachable messages. This imitates Linux's default behavior. 
+    #############################################################################
+    $ipt -A INPUT -i $IFACE -j REJECT --reject-with icmp-proto-unreachable
 done
 
 ## THE OPEN CHAINS ( this can set direct from program 'cliffwall setting' option') ##
-	#############################################################################
-	# Opening ports to incoming connections for server (decommentare solo se necessario)
-	############################################################################# 
-	#$ipt -A TCP -p tcp --dport 80 -j ACCEPT # > To accept incoming TCP connections on port 80 for a web server: 
-	#$ipt -A TCP -p tcp --dport 22 -j DROP # > To allow remote SSH connections (on port 22): 
-	#$ipt -A UDP -p udp --dport 53 -j ACCEPT # > To accept incoming UDP streams on port 53 for a DNS server: 
+    #############################################################################
+    # Opening ports to incoming connections for server (decommentare solo se necessario)
+    ############################################################################# 
+    #$ipt -A TCP -p tcp --dport 80 -j ACCEPT # > To accept incoming TCP connections on port 80 for a web server: 
+    #$ipt -A TCP -p tcp --dport 22 -j DROP # > To allow remote SSH connections (on port 22): 
+    #$ipt -A UDP -p udp --dport 53 -j ACCEPT # > To accept incoming UDP streams on port 53 for a DNS server: 
 
 
-	##################################################
-	# Apertura porte per Torrent (decommentare solo se necessario)
-	##################################################
-	#$ipt -A TCP -p tcp --dport 59162 -j DROP
-	#$ipt -A UDP -p udp --dport 59162 -j DROP
+    ##################################################
+    # Apertura porte per Torrent (decommentare solo se necessario)
+    ##################################################
+    #$ipt -A TCP -p tcp --dport 59162 -j DROP
+    #$ipt -A UDP -p udp --dport 59162 -j DROP
 
-	#######################
-	# Apertura porte aMule (decommentare solo se necessario)
-	########################
-	# $ipt -A TCP -p tcp --dport 4662 -j ACCEPT
-	# $ipt -A UDP -p udp --dport 4672 -j ACCEPT
+    #######################
+    # Apertura porte aMule (decommentare solo se necessario)
+    ########################
+    # $ipt -A TCP -p tcp --dport 4662 -j ACCEPT
+    # $ipt -A UDP -p udp --dport 4672 -j ACCEPT
 
-	#######################
-	# Apertura porte Msn  (decommentare solo se necessario)
-	#######################
-	# $ipt -A TCP -p tcp --dport 6891 -j ACCEPT
-	
+    #######################
+    # Apertura porte Msn  (decommentare solo se necessario)
+    #######################
+    # $ipt -A TCP -p tcp --dport 6891 -j ACCEPT
+    
 
-	##############################
-	# Contro attacchi hacker #
-	##############################
-	# Protection against spoofing attacks
-	$ipt -I INPUT ! -i lo -s 127.0.0.0/8 -j DROP
+    ##############################
+    # Contro attacchi hacker #
+    ##############################
+    # Protection against spoofing attacks
+    $ipt -I INPUT ! -i lo -s 127.0.0.0/8 -j DROP
 
 
 ## "HIDE" YOUR COMPUTER  ##
 for IFACE in ${array[*]};
 do
-	# Block Ping Request
-	$ipt -A INPUT -i $IFACE -p icmp --icmp-type echo-request -m limit --limit 30/min --limit-burst 8 -j ACCEPT
-	$ipt -A INPUT -i $IFACE -p icmp --icmp-type echo-request -j DROP
-	# SYN scans:	
-	$ipt -I TCP -i $IFACE -p tcp -m recent --update --seconds 60 --name TCP-PORTSCAN -j REJECT --reject-with tcp-rst
-	$ipt -D INPUT -i $IFACE -p tcp -j REJECT --reject-with tcp-rst
-	$ipt -A INPUT -i $IFACE -p tcp -m recent --set --name TCP-PORTSCAN -j REJECT --reject-with tcp-rst
-	# UDP Scans:	
-	$ipt -I UDP -i $IFACE -p udp -m recent --update --seconds 60 --name UDP-PORTSCAN -j REJECT --reject-with port-unreach
-	$ipt -D INPUT -i $IFACE -p udp -j REJECT --reject-with icmp-port-unreach
-	$ipt -A INPUT -i $IFACE -p udp -m recent --set --name UDP-PORTSCAN -j REJECT --reject-with icmp-port-unreach
+    # Block Ping Request
+    $ipt -A INPUT -i $IFACE -p icmp --icmp-type echo-request -m limit --limit 30/min --limit-burst 8 -j ACCEPT
+    $ipt -A INPUT -i $IFACE -p icmp --icmp-type echo-request -j DROP
+    # SYN scans:	
+    $ipt -I TCP -i $IFACE -p tcp -m recent --update --seconds 60 --name TCP-PORTSCAN -j REJECT --reject-with tcp-rst
+    $ipt -D INPUT -i $IFACE -p tcp -j REJECT --reject-with tcp-rst
+    $ipt -A INPUT -i $IFACE -p tcp -m recent --set --name TCP-PORTSCAN -j REJECT --reject-with tcp-rst
+    # UDP Scans:	
+    $ipt -I UDP -i $IFACE -p udp -m recent --update --seconds 60 --name UDP-PORTSCAN -j REJECT --reject-with port-unreach
+    $ipt -D INPUT -i $IFACE -p udp -j REJECT --reject-with icmp-port-unreach
+    $ipt -A INPUT -i $IFACE -p udp -m recent --set --name UDP-PORTSCAN -j REJECT --reject-with icmp-port-unreach
 done
 exit 0

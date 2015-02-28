@@ -3,8 +3,8 @@
 #
 #
 #########################################################
-# Name: cliffwall-init-functions (script)
-# Porpose: arguments functional management
+# Name: firewall (script)
+# Porpose: firewall service daemon for linux system
 # Writer: Gianluca Pernigoto <jeanlucperni@gmail.com>
 # Copyright: (c) 2013-2015 Gianluca Pernigoto <jeanlucperni@gmail.com>
 # license: GPL3
@@ -13,34 +13,35 @@
 #########################################################
 
 """
-Main python script for guided management of the program.
-If python scripts were compatible with some systems init
-would use this init script directly as daemon.
+This daemon is running automatically during the system startup and if called 
+with some command arg, but However, for be running, it must have execution 
+permissions .
+
+It must be locate in /etc/init.d or /etc/rc.d, this depend what init-systems
+is used: System V or BSD style .
 """
 
 import sys
 import os
 import time
 
-
 if os.getuid() != 0:
-	print "\033[31;1mPermission denied!\033[0m You are not root"
-	sys.exit(1)
-	
-	
+    print "\033[31;1mPermission denied!\033[0m You are not root"
+    sys.exit(1)
+    
 VERSION = '0.13'
 
 USAGE = ("\033[1m\nUsage: cliffwall "
-		 "{reload|restart|start|stop|block|status|settings|version|help}\033[0m\n")
+        "{reload|restart|start|stop|block|status|settings|version|help}\033[0m\n")
 HELP = """
 COMMAND 
             cliffwall [parameters]
 
 PARAMETERS
-            cliffwall accept one parameter for session only:
+            cliffwall accept one parameter only for session:
             
             reload  (disable and enable firewalling)
-            restart  (alias of reload)
+            restart  (same how reload)
             start  (enable firewalling)
             stop   (disable firewalling)
             status   (show iptables status)
@@ -53,172 +54,160 @@ PARAMETERS
 pathDB = ('/etc/cliffwall/private')
 pathrule = ('/etc/cliffwall')
 
-
 import subprocess
 from cliffwall_pack.settings import Main_Menu
 from cliffwall_pack.load_custom_rules import load_custom
 from cliffwall_pack.conf_parser import parser
 
-
-
 def start():
-	"""
-	During the Gnu/Linux OS startup, this is executed default.
-	Also, it is used like cliffwall command argument from user
-	administrator
-	"""
-	output_parser = parser(pathrule)
-	
-	starting = output_parser[0]
-	interfaces = output_parser[1]
-		
-	try:
-		
-		subprocess.check_call('%s/%s %s' % (pathrule, starting, interfaces), 
-																shell=True)
-		
-	except subprocess.CalledProcessError:
-		
-		sys.exit("[ \033[31;1mFAILED\033[0m ] subprocess.CalledProcessError: "
-										"cliffwall fail on 'start'")
-	
-	load_custom(pathDB) # It run the need where are applied to all settings
-	
-	print "[ \033[32;1mOK\033[0m ] cliffwall: started firewall"
-	
-	
+    """
+    During the Gnu/Linux OS startup, this is executed default.
+    Also, it is used like cliffwall command argument from user
+    administrator
+    """
+    output_parser = parser(pathrule)
+    
+    starting = output_parser[0]
+    interfaces = output_parser[1]
+        
+    try:
+        
+        subprocess.check_call('%s/%s %s' % (pathrule, starting, interfaces), 
+                                                                shell=True)
+        
+    except subprocess.CalledProcessError:
+        
+        sys.exit("[\033[31;1mFAILED\033[0m] subprocess.CalledProcessError: "
+                                        "cliffwall fail on 'start'")
+    
+    load_custom(pathDB) # It run the need where are applied to all settings
+    
+    print "[\033[32;1mOK\033[0m] cliffwall: started firewall"
+    
 def stop():
-	"""
-	This can executed when Gnu/Linux OS it has an shutdown or an reboot .
-	Note that in some OS maybe is need to add the following lines to 
-	/etc/rc.d/rc.local_shutdown:
-	
-	# Stop cliffwall
-	if [ -x /etc/rc.d/rc.firewall ]; then
-	  /etc/rc.d/rc.firewall stop
-	fi
-	"""
-	try:
-		
-		subprocess.check_call('%s/stop stop' % (pathrule), shell=True)
-		
-	except subprocess.CalledProcessError:
-		
-		sys.exit("[ \033[31;1mFAILED\033[0m ] subprocess.CalledProcessError: "
-											"cliffwall fail on 'stop'")
-	
-	print "[ \033[32;1mOK\033[0m ] cliffwall: stopped firewall"
-	
+    """
+    This can executed when Gnu/Linux OS it has an shutdown or an reboot .
+    Note that in some OS maybe is need to add the following lines to 
+    /etc/rc.d/rc.local_shutdown:
+    
+    # Stop cliffwall
+    if [ -x /etc/rc.d/rc.firewall ]; then
+    /etc/rc.d/rc.firewall stop
+    fi
+    """
+    try:
+        
+        subprocess.check_call('%s/stop stop' % (pathrule), shell=True)
+        
+    except subprocess.CalledProcessError:
+        
+        sys.exit("[\033[31;1mFAILED\033[0m] subprocess.CalledProcessError: "
+                                            "cliffwall fail on 'stop'")
+    
+    print "[\033[32;1mOK\033[0m] cliffwall: stopped firewall"
+    
 ########################################################## end functions
-	
+    
 if len(sys.argv) == 1:
-	
-	sys.exit(USAGE)
+    
+    sys.exit(USAGE)
 
 if len(sys.argv) == 2:
 
-	if sys.argv[1] == "restart" or sys.argv[1] == "reload":
-		
-		stop()
-		
-		time.sleep(2)
-		
-		start()
-		
-		sys.exit()
-		
-	elif sys.argv[1] == "start":
-		
-		start()
-		
-		sys.exit()
-		
-	elif sys.argv[1] == "stop":
-		
-		stop()
-		
-		sys.exit()
-		
-	elif sys.argv[1] == "block":
-		"""
-		WARNING: This prevents all internet connections
-		See start script for explanation
-		"""
-		try:
-		
-			subprocess.check_call('%s/block_network block' % (pathrule), shell=True)
-		
-		except subprocess.CalledProcessError:
-			
-			sys.exit("[ \033[31;1mFAILED\033[0m ] subprocess.CalledProcessError: "
-											"cliffwall fail on 'block'")
-		
-		print "[ \033[32;1mOK\033[0m ] cliffwall: Block all network connections"
-		
-		sys.exit()
-		
-		
-	elif sys.argv[1] == "status":
-		"""
-		Shows the formatted output of the command > iptables -nvL
-		"""
-		print "\033[34;1m============================================\033[0m"
-		print "\033[36m"
-		try:
-			subprocess.check_call('iptables -nvL', shell=True)
-			
-		except subprocess.CalledProcessError:
-			sys.exit("\033[31;1m[ FAILED ]\033[0m subprocess.CalledProcessError: "
-							"cliffwall fail on 'status'")
-		print ""
-		print "\033[34;1m============================================\033[0m"
-		sys.exit()
-		
-		
-	elif sys.argv[1] == "settings":
-		
-		opt = Main_Menu(pathDB)
-		
-		try:
-		
-			if opt.outPut != None:
-				subprocess.check_call('iptables %s' % opt.outPut, shell=True)
-				#print 'test 1: %s' % opt.outPut
-				
-			if opt.outPut2 != None:
-				subprocess.check_call('iptables %s' % opt.outPut2, shell=True)
-				#print 'test 2: %s' % opt.outPut2
-			
-		except subprocess.CalledProcessError:
-			sys.exit("\033[31;1m[ FAILED ]\033[0m subprocess.CalledProcessError: "
-							"cliffwall fail on 'settings'")
-		
-		sys.exit()
-		
-		
-	elif sys.argv[1] == "version" or sys.argv[1] == "-v":
-		
-		print ("\ncliffwall: Version %s date 04/02/2015 (C) 2015 Gianluca "
-									"Pernigotto.\n" % VERSION)
-		
-		sys.exit()
-		
-		
-	elif sys.argv[1] == "help" or sys.argv[1] == "-h":
-		
-		print HELP
-		
-		sys.exit()
-		
-		
-	else:
-		
-		sys.exit(USAGE)
+    if sys.argv[1] == "restart" or sys.argv[1] == "reload":
+        
+        stop()
+        
+        time.sleep(3)
+        
+        start()
+        
+        sys.exit()
+        
+    elif sys.argv[1] == "start":
+        
+        start()
+        
+        sys.exit()
+        
+    elif sys.argv[1] == "stop":
+        
+        stop()
+        
+        sys.exit()
+        
+    elif sys.argv[1] == "block":
+        """
+        WARNING: This prevents all internet connections
+        See start script for explanation
+        """
+        try:
+        
+            subprocess.check_call('%s/block_network block' % (pathrule), shell=True)
+        
+        except subprocess.CalledProcessError:
+            
+            sys.exit("[\033[31;1mFAILED\033[0m] subprocess.CalledProcessError: "
+                                            "cliffwall fail on 'block'")
+        
+        print "[ \033[32;1mOK\033[0m ] cliffwall: Block all network connections"
+        
+        sys.exit()
+        
+    elif sys.argv[1] == "status":
+        """
+        Shows the formatted output of the command > iptables -nvL
+        """
+        print "\033[34;1m============================================\033[0m"
+        print "\033[36m"
+        try:
+            subprocess.check_call('iptables -nvL', shell=True)
+            
+        except subprocess.CalledProcessError:
+            sys.exit("\033[31;1m[FAILED]\033[0m subprocess.CalledProcessError: "
+                            "cliffwall fail on 'status'")
+        print ""
+        print "\033[34;1m============================================\033[0m"
+        sys.exit()
+        
+    elif sys.argv[1] == "settings":
+        
+        opt = Main_Menu(pathDB)
+        
+        try:
+        
+            if opt.outPut != None:
+                subprocess.check_call('iptables %s' % opt.outPut, shell=True)
+                #print 'test 1: %s' % opt.outPut
+                
+            if opt.outPut2 != None:
+                subprocess.check_call('iptables %s' % opt.outPut2, shell=True)
+                #print 'test 2: %s' % opt.outPut2
+            
+        except subprocess.CalledProcessError:
+            sys.exit("\033[31;1m[FAILED]\033[0m subprocess.CalledProcessError: "
+                            "cliffwall fail on 'settings'")
+        sys.exit()
+        
+    elif sys.argv[1] == "version" or sys.argv[1] == "-v":
+        
+        print ("\ncliffwall: Version %s date 04/02/2015 (C) 2015 Gianluca "
+                                    "Pernigotto.\n" % VERSION)
+        sys.exit()
+        
+    elif sys.argv[1] == "help" or sys.argv[1] == "-h":
+        
+        print HELP
+        
+        sys.exit()
+        
+    else:
+        sys.exit(USAGE)
 
 if len(sys.argv) > 2: 
-	
-	print "\033[1mcliffwall accept one only argument for session;\033[0m"
-	
-	sys.exit(USAGE)
-	
+    
+    print "\033[1mcliffwall accept one argument for session;\033[0m"
+    
+    sys.exit(USAGE)
+    
 sys.exit()
