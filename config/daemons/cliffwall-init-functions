@@ -143,7 +143,7 @@ if len(sys.argv) == 2:
         """
         try:
         
-            subprocess.check_call('%s/block_network block' % (pathrule), shell=True)
+            subprocess.check_call('%s/block block' % (pathrule), shell=True)
         
         except subprocess.CalledProcessError:
             
