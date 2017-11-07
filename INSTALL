@@ -28,8 +28,10 @@ https://github.com/jeanslack/slackbuilds/tree/master/cliffwall
   
   Or if you prefer clone with git:
      
-     git clone https://github.com/jeanslack/cliffwall
-
+    git clone https://github.com/jeanslack/cliffwall
+ 
+  in both cases, follow the steps below:
+   
 	 USAGE for generate both source and binary packages (.deb)
 	       Enter in unzipped sources folder and type (with not root):
 			
