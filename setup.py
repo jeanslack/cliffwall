@@ -115,7 +115,7 @@ def LINUX_DEBIAN(id_distro, id_version):
         ('share/man/man8', ['man/cliffwall.8.gz'],), 
         ('share/doc/python-cliffwall', glob_files('docs/*'),),
         ('share/doc/python-cliffwall', ['AUTHORS', 'BUGS', 'CHANGELOG', 
-        'COPYING', 'README.md', 'TODO']),
+        'COPYING', 'README.md', 'TODO', 'INSTALL']),
         ('/etc/init.d', ['config/daemons/cliffwall-init'],),
         ('/lib/cliffwall', ['config/daemons/cliffwall-init-functions'],),
         ('/etc/cliffwall', glob_files('config/rules/*'),),

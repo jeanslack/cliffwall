@@ -2,26 +2,48 @@ Note for Debian/Ubuntu Distribuitions:
 
 Building packages:
 ----
+* SLACKWARE:
+
+Require pysetuptools (is not installed for 14.1 and previous version   
+of Slackware:)   
+[slackbuild.org](http://slackbuilds.org/repository/14.1/python/pysetuptools/)
+
+Then, download my SlackBuild for compile the binary package:   
+[jeanslack slackbuilds](https://github.com/jeanslack/slackbuilds/tree/master/cliffwall)   
+
+See the INSTALL file for more details and info on how-to build a 
+Slackware package
 
 * DEBIAN:
 
-Extra dependencies for build package with stdeb and distutils:
+- Install stdeb and distutils whit apt:
 
-# apt-get install python-all python-stdeb fakeroot
+     # apt-get install python-all python-stdeb fakeroot
 
-        USAGE: 
-        - for generate both source and binary packages enter in unzipped 
-          sources folder and type (with not root):
-            python setup.py --command-packages=stdeb.command bdist_deb
+- Download the latest version of cliffwall at:
+
+    <https://github.com/jeanslack/cliffwall/releases>
+  
+  ..and unzip the archive
+  
+  Or if you prefer clone with git:
+     
+     git clone https://github.com/jeanslack/cliffwall
+
+	 USAGE for generate both source and binary packages (.deb)
+	       Enter in unzipped sources folder and type (with not root):
+			
+		   python setup.py --command-packages=stdeb.command bdist_deb
+		 
+	 USAGE for generate source packages only. 
+	       Enter in unzipped sources folder and type (with not root):
+		   
+		   python setup.py --command-packages=stdeb.command sdist_dsc
             
-        - Or generate source packages only. Enter in unzipped sources folder and type 
-          (with not root):
-            python setup.py --command-packages=stdeb.command sdist_dsc
-            
-        RESOURCES:
-        - look at there for major info:
-            https://pypi.python.org/pypi/stdeb
-            http://shallowsky.com/blog/programming/python-debian-packages-w-stdeb.html
+	 RESOURCES:
+	 - look at there for major info:
+		 https://pypi.python.org/pypi/stdeb
+		 http://shallowsky.com/blog/programming/python-debian-packages-w-stdeb.html
 
 This should create a python-myApplication_version_all.deb in the new deb_dist directory. 
 Also See the setup.py script for more details.
@@ -31,11 +53,16 @@ Very Important Resources:
 https://pypi.python.org/pypi/stdeb/0.8.5#customizing-the-produced-debian-source-package-config-options
 https://github.com/astraw/stdeb/issues/100#issuecomment-77645614
 
-Post-Installation:
+Known Issues:
+----
 
-- On Debian 9 stretch, the python-cliffwall.postinstall file is not executed at the post installation
-  of the debian package. This happens if you compile the cliffwall source with the above commands: 
-  To fix this problem,You should complete the configuration manually, then type.
+- On Debian 9 stretch, the python-cliffwall.postinstall file is not executed at 
+  the post installation of the debian package. This happens if you compile the 
+  cliffwall source with the above commands. To fix this problem,You should 
+  complete the configuration manually, then type:
+  
              # systemctl enable cliffwall-init
-  This make a links to run level start-up (rcN.d). The reasons are explained in the changelog file 
+             
+  This make a links to run level start-up (rcN.d). The reasons are explained 
+  in the changelog file 
   
