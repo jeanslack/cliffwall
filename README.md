@@ -61,7 +61,7 @@ Require pysetuptools (is not installed for 14.1 and previous version of Slackwar
 Then download my SlackBuild for compile the binary package:   
 [jeanslack slackbuilds](https://github.com/jeanslack/slackbuilds/tree/master/cliffwall)   
 
-See the INSTALL file in the sources folder for more complete details
+See the INSTALL file in the sources folder for more complete details:    [https://github.com/jeanslack/cliffwall/blob/master/INSTALL](https://github.com/jeanslack/cliffwall/blob/master/INSTALL)
 
 
 --------------------------------------------------------------------------------
