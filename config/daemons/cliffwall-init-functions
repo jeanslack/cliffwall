@@ -6,7 +6,7 @@
 # Name: firewall (script)
 # Porpose: firewall service daemon for linux system
 # Writer: Gianluca Pernigoto <jeanlucperni@gmail.com>
-# Copyright: (c) 2013-2015 Gianluca Pernigoto <jeanlucperni@gmail.com>
+# Copyright: (c) 2013-2017 Gianluca Pernigoto <jeanlucperni@gmail.com>
 # license: GPL3
 # Version: (V0.12) Tuesday, 14 August 2012
 # Rev (v0.13) 04/02/2015

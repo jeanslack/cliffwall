@@ -1,5 +1,5 @@
 Package: cliffwall
-Version: 0.12
+Version: 0.14
 Architecture: all
 Maintainer: Gianluca Pernigotto <jeanlucperni@gmail.com>
 Installed-Size: 199
@@ -17,7 +17,7 @@ Description: cliffwall (cli) is a personalizable Stateful Firewall
  tuttavia è configurabile per ogni tipo di interfaccia attraverso il suo file
  di configurazione situato in '/etc/cliffwall/0.11/iface.conf'.
  .
- Offre veloci possibilità di personalizzazione automatizzate: blocco degli IP 
+ Offre possibilità di personalizzazione automatizzate: blocco degli IP 
  (source, destination), impostazioni porte tcp/udp (drop, accept, reject)
  ed eventuale eliminazione di ogni personale regola impostata senza che
  l'utente usi direttamente i comandi di iptables. 

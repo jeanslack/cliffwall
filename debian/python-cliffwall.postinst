@@ -1,24 +1,64 @@
 #! /bin/sh
+#########################################################
+# Name: python-cliffwall.postinst
+# Porpose: makes post-installation processes
+# Writer: Gianluca Pernigoto <jeanlucperni@gmail.com>
+# Copyright: (c) 2013-2017 Gianluca Pernigoto <jeanlucperni@gmail.com>
+# license: GPL3
+# Version: (V0.12) Tuesday, 14 August 2012
+# Rev (v0.13) 06/02/2015
+# Rev (v0.14) mondey 06 Nov 2017
+##########################################################
+
+# Arranges service start up on the run levels (rc?.d), but first verify 
+# what are the service manager that enables this make.
+# From Debian 8 (jessy) systemd is a replacement for sysvinit, so it is 
+# necessary to evaluate which system is in use. 
+# This would make the .deb package back-compatible
+
+DESCRIPT=`lsb_release -d -s`
+CODENAME=`lsb_release -c -s`
+RELEASE=`lsb_release -r -s`
 
 set -e
 
-# Arrange for a daemon to be started at system boot time
-echo ''
-echo "Update runlevel link for init script"
+echo '\n- Debian release: '"$RELEASE"
 
-#update-rc.d cliffwall-init defaults >/dev/null # use for debian prior 6.?
+if [ "$CODENAME" = "wheezy" ]; then
+    echo '- Codename:' "$CODENAME \n"
+    echo "Update runlevel link with insserv manager "
+    #update-rc.d cliffwall-init defaults >/dev/null # use for debian prior 6.?
+    insserv cliffwall-init # use for debian version => 6.?
+       
+elif [ "$CODENAME" = "jessie" ]; then
+    echo '- Codename:' "$CODENAME \n" 
+    echo "Update runlevel link with systemd "
+    systemctl enable cliffwall-init
+    
+elif [ "$CODENAME" = 'stretch' ]; then
+    echo '- Codename:' "$CODENAME \n" 
+    echo "Update runlevel link with systemd "
+    systemctl enable cliffwall-init
+    
+else
+  echo '-------------ERROR--------------'
+  echo "$DESCRIPT, is not supported." 
+  echo "Cliffwall installation is broken, please remove it"
+  echo '---------------------------'
+  exit 1
+  
+fi   
 
-insserv cliffwall-init # use for debian version => 6.?
-
-if [ ! -d /etc/cliffwall/private ]; then
-	mkdir /etc/cliffwall/private
-	#chmod 0700 /etc/cliffwall/private
-fi
+#if [ ! -d /etc/cliffwall/private ]; then
+#	mkdir /etc/cliffwall/private
+#	#chmod 0700 /etc/cliffwall/private
+#fi
  
-echo ''
-echo "If you want enable now security kernel parameters, type:"
-echo "/sbin/sysctl -p /etc/sysctl.d/cliffwall10net.conf" 
-echo "For run cliffwall, type:"
-echo "'cliffwall start'\n For use read man cliffwall "
-	
+echo "\nYou could enables the security kernel parameters into "
+echo "/sbin/sysctl and the /etc/sysctl.d/cliffwall10net.conffile "
+echo "type: "
+echo "/sbin/sysctl -p /etc/sysctl.d/cliffwall10net.conf \n"
+echo "Or read the man:cliffwall \n"
 exit 0
+
+

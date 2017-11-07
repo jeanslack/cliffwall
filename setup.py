@@ -6,12 +6,13 @@
 #
 #########################################################
 # Name: setup.py
-# Porpose: script for building cliffwall package
-# Platform: Linux Slackware
+# Porpose: script for building python cliffwall package
+# Platform: Linux
 # Writer: Gianluca Pernigoto <jeanlucperni@gmail.com>
-# Copyright: (c) 2014-15 Gianluca Pernigoto <jeanlucperni@gmail.com>
+# Copyright: (c) 2014-2017 Gianluca Pernigoto <jeanlucperni@gmail.com>
 # license: GPL3
-# Rev 16/02/2015
+# 1 Rev 16/Feb/2015
+# 2 Rev 07/Nov/2017
 #########################################################
 
 from distutils.core import setup
@@ -22,7 +23,7 @@ import sys
 import os
 
 NAME = 'cliffwall'
-VERSION = '0.13'
+VERSION = '0.14'
 LICENSE = 'Gnu GPL3 (See LICENSE)'
 DESCRIPTION = 'Firewall iptables based'
 
@@ -118,6 +119,7 @@ def LINUX_DEBIAN(id_distro, id_version):
         ('/etc/init.d', ['config/daemons/cliffwall-init'],),
         ('/lib/cliffwall', ['config/daemons/cliffwall-init-functions'],),
         ('/etc/cliffwall', glob_files('config/rules/*'),),
+        ('/etc/cliffwall/private', [],),
         ('/etc/sysctl.d', ['config/cliffwall10net.conf'],),
                 ]
     

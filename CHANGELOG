@@ -1,4 +1,20 @@
 +--------------------------+
+Nov 07  2017 release: 0.14
++--------------------------+
+- Fix error to a path string in the 'cliffwall-init-functions' file. 
+  This string regard the 'cliffwall block' command that not was match 
+  with the file name:
+  /etc/cliffwall/block_network > /etc/cliffwall/block
+  
+- I seem to have solving a problem of the python-cliffwall.postinst script
+  during binary debian packages installation, on a linking run level start up. 
+  From Debian 8 jessy systemd is a replacement for sysvinit, so it is necessary 
+  to evaluate which system is in use. This would make the .deb package 
+  back-compatible with Debian wheezy, Debian jessie to Debian stretch.
+  
+- File and folder placement is now completely relegated to setup.py
+
++--------------------------+
 Febbruary 18  2015
 +--------------------------+
 

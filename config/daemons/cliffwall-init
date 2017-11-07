@@ -2,11 +2,22 @@
 ### BEGIN INIT INFO
 # Provides:      cliffwall
 # Required-Start:   $network
-# Required-Stop:
-# Default-Start:  S
-# Default-Stop:   1  
+# Required-Stop:    $network
+# Default-Start:  2 3 4 5
+# Default-Stop:   0 6  
 # Short-Description: Activate iptables firewalling at boot time.
 ### END INIT INFO
+#
+#########################################################
+# Name: cliffwall-init
+# Porpose: start-up script for sysv, systemd and rc.d 
+# Writer: Gianluca Pernigoto <jeanlucperni@gmail.com>
+# Copyright: (c) 2013-2017 Gianluca Pernigoto <jeanlucperni@gmail.com>
+# license: GPL3
+# Version: (V0.12) Tuesday, 14 August 2012
+# Rev (v0.13) 04/02/2015
+# Rev (v0.14) 07/Nov/2017
+#########################################################
 
 # cliffwall-init: script for run cliffwall at boot
 

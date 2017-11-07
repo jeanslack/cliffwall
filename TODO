@@ -1,1 +1,7 @@
-traslations is incomplete
+
+- traslations is incomplete
+
+- On Debian 9 stretch my /debian/python-cliffwall.postinst not has used by stdeb
+
+- Testing with Debian 8 jessie
+
