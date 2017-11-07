@@ -6,13 +6,13 @@ Building packages:
 
 Require pysetuptools (is not installed for 14.1 and previous version   
 of Slackware:)   
-[slackbuild.org](http://slackbuilds.org/repository/14.1/python/pysetuptools/)
 
-Then, download my SlackBuild for compile the binary package:   
-[jeanslack slackbuilds](https://github.com/jeanslack/slackbuilds/tree/master/cliffwall)   
+http://slackbuilds.org/repository/14.1/python/pysetuptools/
 
-See the INSTALL file for more details and info on how-to build a 
-Slackware package
+Then, go to my slackbuild github page and read the instructions 
+to use slackbuild and create the binary package:   
+
+https://github.com/jeanslack/slackbuilds/tree/master/cliffwall   
 
 * DEBIAN:
 

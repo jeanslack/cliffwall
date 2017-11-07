@@ -36,23 +36,9 @@ Features:
 
 * ..and other
 
-Use
--------
-After installation, open a terminal window and type:
-
-		man cliffwall
-
-Or open a terminal window with administrator privileges and type:
-
-		cliffwall -h
-
-Installation
--------
-See the INSTALL file
-
 Building packages:
 ----
-Read INSTALL file in the sources folder for complete details
+See the INSTALL file in the sources folder for more complete details
 
 * DEBIAN:
 
@@ -69,15 +55,13 @@ See the INSTALL file for more details and info on how-to build .deb package
 
 * SLACKWARE:
 
-Require pysetuptools (is not installed for 14.1 and previous version   
-of Slackware:)   
+Require pysetuptools (is not installed for 14.1 and previous version of Slackware:)   
 [slackbuild.org](http://slackbuilds.org/repository/14.1/python/pysetuptools/)
 
 Then download my SlackBuild for compile the binary package:   
 [jeanslack slackbuilds](https://github.com/jeanslack/slackbuilds/tree/master/cliffwall)   
 
-See the INSTALL file for more details and info on how-to build a 
-Slackware package
+See the INSTALL file in the sources folder for more complete details
 
 
 --------------------------------------------------------------------------------
