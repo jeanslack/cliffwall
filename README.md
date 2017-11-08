@@ -2,7 +2,7 @@
 Simple Iptables UI for Gnu/Linux (firewall)
 --------------------------------------------
 
-Copyright © 2013 - 2017 by Gianluca Pernigotto aka jeanslack   
+Copyright Â© 2013 - 2017 by Gianluca Pernigotto aka jeanslack   
 Author and Developer: Gianluca Pernigotto   
 Mail: <jeanlucperni@gmail.com>   
 License: GPL3 (see LICENSE file in the doc folder)
@@ -52,6 +52,7 @@ Enter in unzipped sources folder and type (with not root):
 
 This should create a python-cliffwall.deb in the new deb_dist directory.   
 See the INSTALL file for more details and info on how-to build .deb package   
+[https://github.com/jeanslack/cliffwall/blob/master/INSTALL](https://github.com/jeanslack/cliffwall/blob/master/INSTALL)
 
 * SLACKWARE:
 
