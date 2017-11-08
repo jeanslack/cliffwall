@@ -7,7 +7,7 @@ Depends: python2.7, iptables
 Recommends:  
 Section: admin
 Priority: optional
-Homepage: http://itamburiditux.blogspot.com/
+Homepage: https://github.com/jeanslack/cliffwall
 Description: cliffwall (cli) is a personalizable Stateful Firewall  
  cliffwall è un programma firewall (statefull) basato su iptables, senza 
  interfaccia grafica, scritto in python e bash, che filtra e limita i pacchetti 

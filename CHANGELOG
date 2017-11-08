@@ -1,16 +1,21 @@
 +--------------------------+
-Nov 07  2017 release: 0.14
+Nov 08  2017 release: 0.14
++--------------------------+
+
+- On Debian 9 stretch my /debian/python-cliffwall.postinst is not has used by 
+  stdeb and then is not executed at the post installation of the debian package. 
+  This happens if you compile the cliffwall source with distutils and stdeb.
+  For now, I have removed the only possibility of using the postinst file 
+  and avoid this problem.
+  To fix this problem you should do it manually after installation:
+
++--------------------------+
+Nov 07  2017 release: 0.13
 +--------------------------+
 - Fix error to a path string in the 'cliffwall-init-functions' file. 
   This string regard the 'cliffwall block' command that not was match 
   with the file name:
   /etc/cliffwall/block_network > /etc/cliffwall/block
-  
-- I seem to have solving a problem of the python-cliffwall.postinst script
-  during binary debian packages installation, on a linking run level start up. 
-  From Debian 8 jessy systemd is a replacement for sysvinit, so it is necessary 
-  to evaluate which system is in use. This would make the .deb package 
-  back-compatible with Debian wheezy, Debian jessie to Debian stretch.
   
 - File and folder placement is now completely relegated to setup.py
 

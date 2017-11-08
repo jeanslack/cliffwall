@@ -1,0 +1,35 @@
+
+FOR DEBIAN USERS ONLY:
+ 
+Come see, this folder has a underscore that precedes the debian name.
+Without this underscore should be considered when compiling the debian 
+binary package with distutils/stdeb, but this implementation for now seems 
+to work only on Debian 7 wheezy. :-(
+
+If you take this into, you might want to remove the underscore for that 
+version of Debian where it work, or try to solve this problem for the 
+others versions.
+
+This folder, however, contains an debian .postinst file that would run at the 
+end of the package installation. It checks the Debian version release to invoke 
+the most start-up service manager to update symbolic links in /etc/rcN.d .
+By doing this, you would avoid doing it manually after installation.
+
+Other explanations:
+------------------
+ 
+On Debian 9 stretch my /debian/python-cliffwall.postinst is not has used by 
+stdeb and then is not executed at the post installation of the debian package. 
+This happens if you compile the cliffwall source with distutils and stdeb.
+For now, I have removed the only possibility of using the postinst file and 
+avoid this problem.
+To fix this problem you should do it manually after installation:
+
+		   # systemctl enable cliffwall-init
+		   
+This make a links to run level start-up (rcN.d).
+
+Very Important Resources (for developpers):
+
+https://pypi.python.org/pypi/stdeb/0.8.5#customizing-the-produced-debian-source-package-config-options
+https://github.com/astraw/stdeb/issues/100#issuecomment-77645614

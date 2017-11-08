@@ -1,7 +1,8 @@
 
 - traslations is incomplete
 
-- On Debian 9 stretch my /debian/python-cliffwall.postinst not has used by stdeb
-
+- On Debian 9 stretch my /debian/python-cliffwall.postinst not work (see the
+  _debian/README_debian)
+  
 - Testing with Debian 8 jessie
 

@@ -29,7 +29,7 @@ if os.getuid() != 0:
     print "\033[31;1mPermission denied!\033[0m You are not root"
     sys.exit(1)
     
-VERSION = '0.13'
+VERSION = '0.14'
 
 USAGE = ("\033[1m\nUsage: cliffwall "
         "{reload|restart|start|stop|block|status|settings|version|help}\033[0m\n")

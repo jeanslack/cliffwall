@@ -1,7 +1,8 @@
 Note for Debian/Ubuntu Distribuitions:
 
-Building packages:
-----
+Building packages explanations:
+-----------------
+
 * SLACKWARE:
 
 Require pysetuptools (is not installed for 14.1 and previous version   
@@ -9,10 +10,11 @@ of Slackware:)
 
 http://slackbuilds.org/repository/14.1/python/pysetuptools/
 
-Then, go to my slackbuild github page and read the instructions 
-to use slackbuild and create the binary package:   
+Then, go to my slackbuild github page and read how to use the slackbuild 
+for create the binary package and install it:   
 
 https://github.com/jeanslack/slackbuilds/tree/master/cliffwall   
+
 
 * DEBIAN:
 
@@ -32,39 +34,66 @@ https://github.com/jeanslack/slackbuilds/tree/master/cliffwall
  
   in both cases, follow the steps below:
    
-	 USAGE for generate both source and binary packages (.deb)
-	       Enter in unzipped sources folder and type (with not root):
-			
-		   python setup.py --command-packages=stdeb.command bdist_deb
+  USAGE for generate both source and binary packages (.deb)
+		Enter in unzipped sources folder and type (with not root):
 		 
-	 USAGE for generate source packages only. 
-	       Enter in unzipped sources folder and type (with not root):
-		   
-		   python setup.py --command-packages=stdeb.command sdist_dsc
-            
-	 RESOURCES:
-	 - look at there for major info:
-		 https://pypi.python.org/pypi/stdeb
-		 http://shallowsky.com/blog/programming/python-debian-packages-w-stdeb.html
+		python setup.py --command-packages=stdeb.command bdist_deb
+		
+		This should create a python-cliffwall_version_all.deb in the 
+		new deb_dist directory.
+		
+  USAGE for generate source packages only. 
+		Enter in unzipped sources folder and type (with not root):
+		
+		python setup.py --command-packages=stdeb.command sdist_dsc
+		
+		This should create a sources archive in debian style.
+		 
+  RESOURCES:
+  - look at there for major info:
+	  https://pypi.python.org/pypi/stdeb
+	  http://shallowsky.com/blog/programming/python-debian-packages-w-stdeb.html
 
-This should create a python-myApplication_version_all.deb in the new deb_dist directory. 
-Also See the setup.py script for more details.
+Installation:
+-------------
 
-Very Important Resources:
+Installs the created binary package:
 
-https://pypi.python.org/pypi/stdeb/0.8.5#customizing-the-produced-debian-source-package-config-options
-https://github.com/astraw/stdeb/issues/100#issuecomment-77645614
+    # dpkg -i python-cliffwall-version.deb
+    
+If you want enable the firewall at system boot, type:
+ 
+On Debian 7 wheezy with root, type:
+   
+	  # insserv cliffwall-init
+	  
+With Debian 8 jessie and Debian 9 stretch with root, type:
+   
+	  # systemctl enable cliffwall-init
 
-Known Issues:
-----
+These commands make a simlink to rcN.d for start-up the service to boot
 
-- On Debian 9 stretch, the python-cliffwall.postinstall file is not executed at 
-  the post installation of the debian package. This happens if you compile the 
-  cliffwall source with the above commands. To fix this problem,You should 
-  complete the configuration manually, then type:
-  
-             # systemctl enable cliffwall-init
-             
-  This make a links to run level start-up (rcN.d). The reasons are explained 
-  in the changelog file 
-  
+Enable the sysctl:
+ 
+You could enables the security kernel parameters into /sbin/sysctl and the /etc/sysctl.d/cliffwall10net.conffile type: 
+ 
+    # /sbin/sysctl -p /etc/sysctl.d/cliffwall10net.conf
+
+Or read the man:cliffwall.
+
+Uninstall:
+----------
+
+For a complete removal and restoration of the previous system, type:
+ 
+    # cliffwall stop
+    # apt-get remove --purge python-cliffwall
+    
+Remove symbolic links for firewall system boot in /etc/rcN.d :
+
+    # update-rc.d -f cliffwall-init remove
+    
+and finally, if it exists, we can remove the script in /etc/init.d :
+ 
+     # rm /etc/init.d/cliffwall-init
+     

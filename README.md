@@ -58,7 +58,7 @@ See the INSTALL file for more details and info on how-to build .deb package
 Require pysetuptools (is not installed for 14.1 and previous version of Slackware:)   
 [slackbuild.org](http://slackbuilds.org/repository/14.1/python/pysetuptools/)
 
-Then download my SlackBuild for compile the binary package:   
+Then, download my SlackBuild for compile the binary package:   
 [jeanslack slackbuilds](https://github.com/jeanslack/slackbuilds/tree/master/cliffwall)   
 
 See the INSTALL file in the sources folder for more complete details:    [https://github.com/jeanslack/cliffwall/blob/master/INSTALL](https://github.com/jeanslack/cliffwall/blob/master/INSTALL)
